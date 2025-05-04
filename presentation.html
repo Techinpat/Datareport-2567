@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายงานผลการดำเนินงานตามแผนปฏิบัติการประจำปีการศึกษา 2567</title>
+    <style>
+        :root {
+            --primary: #d10a30;
+            --secondary: #0a3b75;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --accent: #ffc107;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Sarabun', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .slide {
+            display: none;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 20px;
+            min-height: 500px;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        h1, h2, h3 {
+            color: var(--secondary);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--primary);
+        }
+        
+        h2 {
+            font-size: 24px;
+            margin: 15px 0;
+            color: var(--secondary);
+        }
+        
+        h3 {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: white;
+            margin: 0;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn:hover {
+            background-color: var(--primary);
+        }
+        
+        .dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            background-color: #bbb;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .dot.active {
+            background-color: var(--primary);
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 90%;
+            margin: 30px auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: var(--secondary);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        
+        .timeframe {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+        
+        .timeframe::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: var(--primary);
+            border: 4px solid var(--secondary);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .left {
+            left: 0;
+        }
+        
+        .right {
+            left: 50%;
+        }
+        
+        .right::after {
+            left: -10px;
+        }
+        
+        .content {
+            padding: 15px;
+            background-color: white;
+            position: relative;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .strategy-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid var(--primary);
+        }
+        
+        .strategy-card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .strategy-title {
+            background-color: var(--secondary);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        .progress-bar {
+            height: 25px;
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            text-align: center;
+            line-height: 25px;
+            color: white;
+            font-weight: bold;
+            transition: width 1s;
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 300px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .chart-bar {
+            width: 60px;
+            background: linear-gradient(0deg, var(--primary), var(--secondary));
+            border-radius: 10px 10px 0 0;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            transition: height 1s;
+            margin-bottom: 35px;
+        }
+        
+        .chart-label {
+            position: absolute;
+            bottom: -25px;
+            text-align: center;
+            font-size: 14px;
+            width: 100%;
+            color: var(--secondary);
+        }
+        
+        .chart-value {
+            color: white;
+            font-weight: bold;
+            padding: 5px 0;
+        }
+        
+        .projects-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .project-item {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        
+        .project-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .project-title {
+            font-weight: bold;
+            color: var(--secondary);
+        }
+        
+        .success-indicators {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .indicator-card {
+            background: white;
+            width: 180px;
+            height: 180px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 10px;
+            transition: all 0.3s;
+            border-bottom: 4px solid var(--primary);
+        }
+        
+        .indicator-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .indicator-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .indicator-label {
+            text-align: center;
+            font-size: 14px;
+            color: var(--dark);
+            margin-top: 10px;
+        }
+        
+        .editable {
+            border: 1px dashed transparent;
+            padding: 5px;
+            transition: all 0.3s;
+        }
+        
+        .editable:hover {
+            border-color: #ccc;
+            background-color: #f9f9f9;
+        }
+        
+        .editable:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: #fff;
+        }
+        
+        .save-btn {
+            display: block;
+            margin: 20px auto;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .save-btn:hover {
+            background-color: var(--secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 200px;
+            }
+            
+            .strategy-card {
+                padding: 15px;
+            }
+            
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeframe {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeframe::after {
+                left: 22px;
+            }
+            
+            .right {
+                left: 0%;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 contenteditable="true" class="editable">รายงานผลการดำเนินงานตามแผนปฏิบัติการประจำปีการศึกษา 2567</h1>
+            <p contenteditable="true" class="editable">วิทยาลัยเทคโนโลยีและอาชีวศึกษาตากสินระยอง</p>
+            <p contenteditable="true" class="editable">ระหว่างวันที่ 17 พฤษภาคม 2567 - 31 มีนาคม 2568</p>
+        </div>
+        
+        <div class="navigation">
+            <button class="nav-btn" onclick="prevSlide()">ก่อนหน้า</button>
+            <button class="nav-btn" onclick="nextSlide()">ถัดไป</button>
+        </div>
+        
+        <div class="dots">
+            <span class="dot active" onclick="showSlide(0)"></span>
+            <span class="dot" onclick="showSlide(1)"></span>
+            <span class="dot" onclick="showSlide(2)"></span>
+            <span class="dot" onclick="showSlide(3)"></span>
+            <span class="dot" onclick="showSlide(4)"></span>
+        </div>
+        
+        <!-- หน้าที่ 1: ปกและภาพรวม -->
+        <div class="slide active">
+            <h1 contenteditable="true" class="editable">ภาพรวมการดำเนินงาน</h1>
+            
+            <div class="timeline">
+                <div class="timeframe left">
+                    <div class="content">
+                        <h3 contenteditable="true" class="editable">เริ่มปีการศึกษา</h3>
+                        <p contenteditable="true" class="editable">17 พฤษภาคม 2567 - เริ่มดำเนินการตามแผนปฏิบัติการประจำปี</p>
+                    </div>
+                </div>
+                <div class="timeframe right">
+                    <div class="content">
+                        <h3 contenteditable="true" class="editable">การประเมินผลภาคเรียนที่ 1</h3>
+                        <p contenteditable="true" class="editable">ตุลาคม 2567 - ติดตามผลการดำเนินงานระยะกลางปี</p>
+                    </div>
+                </div>
+                <div class="timeframe left">
+                    <div class="content">
+                        <h3 contenteditable="true" class="editable">เริ่มภาคเรียนที่ 2</h3>
+                        <p contenteditable="true" class="editable">พฤศจิกายน 2567 - ปรับปรุงแผนและดำเนินการต่อเนื่อง</p>
+                    </div>
+                </div>
+                <div class="timeframe right">
+                    <div class="content">
+                        <h3 contenteditable="true" class="editable">สรุปผลการดำเนินงาน</h3>
+                        <p contenteditable="true" class="editable">มีนาคม 2568 - ประเมินผลสำเร็จตามแผนปฏิบัติการ</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 contenteditable="true" class="editable">ความก้าวหน้าภาพรวม</h2>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 85%;" contenteditable="true">85%</div>
+            </div>
+            
+            <div class="success-indicators">
+                <div class="indicator-card">
+                    <div class="indicator-value" contenteditable="true">95%</div>
+                    <div class="indicator-label" contenteditable="true">ผู้สำเร็จการศึกษาผ่านเกณฑ์</div>
+                </div>
+                <div class="indicator-card">
+                    <div class="indicator-value" contenteditable="true">42</div>
+                    <div class="indicator-label" contenteditable="true">โครงการที่ดำเนินการแล้วเสร็จ</div>
+                </div>
+                <div class="indicator-card">
+                    <div class="indicator-value" contenteditable="true">87%</div>
+                    <div class="indicator-label" contenteditable="true">ความพึงพอใจของผู้เรียน</div>
+                </div>
+                <div class="indicator-card">
+                    <div class="indicator-value" contenteditable="true">26</div>
+                    <div class="indicator-label" contenteditable="true">เครือข่ายความร่วมมือ</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- หน้าที่ 2: ยุทธศาสตร์ที่ 1 -->
+        <div class="slide">
+            <div class="strategy-title">
+                <h2 contenteditable="true" class="editable">ยุทธศาสตร์ที่ 1: พัฒนาคุณลักษณะของผู้สำเร็จการศึกษาอาชีวศึกษาที่พึงประสงค์</h2>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-bar" style="height: 80%;">
+                    <div class="chart-value" contenteditable="true">80%</div>
+                    <div class="chart-label" contenteditable="true" style="bottom: -30px; font-weight: bold;">ทักษะวิชาชีพ</div>
+                </div>
+                <div class="chart-bar" style="height: 90%;">
+                    <div class="chart-value" contenteditable="true">90%</div>
+                    <div class="chart-label" contenteditable="true" style="bottom: -30px; font-weight: bold;">ทักษะชีวิต</div>
+                </div>
+                <div class="chart-bar" style="height: 75%;">
+                    <div class="chart-value" contenteditable="true">75%</div>
+                    <div class="chart-label" contenteditable="true" style="bottom: -30px; font-weight: bold;">ภาษาต่างประเทศ</div>
+                </div>
+                <div class="chart-bar" style="height: 85%;">
+                    <div class="chart-value" contenteditable="true">85%</div>
+                    <div class="chart-label" contenteditable="true" style="bottom: -30px; font-weight: bold;">ทักษะดิจิทัล</div>
+                </div>
+                <div class="chart-bar" style="height: 95%;">
+                    <div class="chart-value" contenteditable="true">95%</div>
+                    <div class="chart-label" contenteditable="true" style="bottom: -30px; font-weight: bold;">จิตอาสา</div>
+                </div>
+            </div>
+            
+            <h3 contenteditable="true" class="editable">โครงการสำคัญ</h3>
+            <ul class="projects-list">
+                <li class="project-item">
+                    <div class="project-title" contenteditable="true">โครงการพัฒนาทักษะวิชาชีพตามมาตรฐานสากล</div>
+                    <p contenteditable="true" class="editable">ดำเนินการแล้ว 8 กิจกรรม จากทั้งหมด 10 กิจกรรม คิดเป็น 80% ผู้เรียนมีทักษะปฏิบัติงานตามมาตรฐานวิชาชีพเพิ่มขึ้น</p>
+                </li>
+                <li class="project-item">
+                    <div class="project-title" contenteditable="true">โครงการส่งเสริมคุณธรรมจริยธรรมและจิตอาสา</div>
+                    <p contenteditable="true" class="editable">ดำเนินการแล้ว 12 กิจกรรม จากทั้งหมด 12 กิจกรรม คิดเป็น 100% นักศึกษาเข้าร่วมกิจกรรมจิตอาสามากกว่า 95%</p>
+                </li>
+                <li class="project-item">
+                    <div class="project-title" contenteditable="true">โครงการพัฒนาทักษะภาษาอังกฤษเพื่อการสื่อสารในงานอาชีพ</div>
+                    <p contenteditable="true" class="editable">ดำเนินการแล้ว 6 กิจกรรม จากทั้งหมด 8 กิจกรรม คิดเป็น 75% นักศึกษามีผลคะแนนสอบภาษาอังกฤษผ่านเกณฑ์ 72%</p>
+                </li>
+            </ul>
+            
+            <div class="strategy-card">
+                <h3 contenteditable="true" class="editable">ผลสัมฤทธิ์ที่สำคัญ</h3>
+                <p contenteditable="true" class="editable">- นักศึกษาได้รับรางวัลการแข่งขันทักษะวิชาชีพระดับภาค 12 รางวัล ระดับชาติ 3 รางวัล</p>
+                <p contenteditable="true" class="editable">- ผู้สำเร็จการศึกษามีงานทำภายใน 1 ปี ร้อยละ 92</p>
+                <p contenteditable="true" class="editable">- ความพึงพอใจของสถานประกอบการต่อผู้สำเร็จการศึกษา ร้อยละ 88</p>
+            </div>
+        </div>
+        
+        <!-- หน้าที่ 3: ยุทธศาสตร์ที่ 2 -->
+        <div class="slide">
+            <div class="strategy-title">
+                <h2 contenteditable="true" class="editable">ยุทธศาสตร์ที่ 2: พัฒนากระบวนการจัดการและการบริหารการศึกษาอาชีวศึกษา</h2>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-bar" style="height: 90%;">
+                    <div class="chart-value" contenteditable="true">90%</div>
+                    <div class="chart-label" contenteditable="true" style="bottom: -30px; font-weight: bold;">บริหารจัดการ</div>
+                </div>
+                <div class="chart-bar" style="height: 85%;">
+                    <div class="chart-value" contenteditable="true">85%</div>
+                    <div class="chart-label" contenteditable="true" style="bottom: -30px; font-weight: bold;">พัฒนาครู</div>
+                </div>
+                <div class="chart-bar" style="height: 80%;">
+                    <div class="chart-value" contenteditable="true">80%</div>
+                    <div class="chart-label" contenteditable="true" style="bottom: -30px; font-weight: bold;">หลักสูตร</div>
+                </div>
+                <div class="chart-bar" style="height: 95%;">
+                    <div class="chart-value" contenteditable="true">95%</div>
+                    <div class="chart-label" contenteditable="true" style="bottom: -30px; font-weight: bold;">สิ่งแวดล้อม</div>
+                </div>
+                <div class="chart-bar" style="height: 75%;">
+                    <div class="chart-value" contenteditable="true">75%</div>
+                    <div class="chart-label" contenteditable="true" style="bottom: -30px; font-weight: bold;">เทคโนโลยี</div>
+                </div>
+            </div>
+            
+            <h3 contenteditable="true" class="editable">โครงการสำคัญ</h3>
+            <ul class="projects-list">
+                <li class="project-item">
+                    <div class="project-title" contenteditable="true">โครงการพัฒนาระบบบริหารจัดการสถานศึกษาด้วยระบบดิจิทัล</div>
+                    <p contenteditable="true" class="editable">ดำเนินการแล้ว 6 ระบบ จากทั้งหมด 8 ระบบ คิดเป็น 75% ลดระยะเวลาการทำงานลง 45%</p>
+                </li>
+                <li class="project-item">
+                    <div class="project-title" contenteditable="true">โครงการพัฒนาศักยภาพครูและบุคลากรทางการศึกษา</div>
+                    <p contenteditable="true" class="editable">ดำเนินการอบรมแล้ว 17 หลักสูตร จากทั้งหมด 20 หลักสูตร คิดเป็น 85% ครูได้รับการพัฒนาครบ 100%</p>
+                </li>
+                <li class="project-item">
+                    <div class="project-title" contenteditable="true">โครงการพัฒนาสภาพแวดล้อมการเรียนรู้ที่เอื้อต่อการจัดการเรียนการสอน</div>
+                    <p contenteditable="true" class="editable">ดำเนินการปรังปรุงแล้ว 19 พื้นที่ จากทั้งหมด 20 พื้นที่ คิดเป็น 95% ความพึงพอใจผู้ใช้บริการ 92%</p>
+                </li>
+            </ul>
+            
+            <div class="strategy-card">
+                <h3 contenteditable="true" class="editable">ผลสัมฤทธิ์ที่สำคัญ</h3>
+                <p contenteditable="true" class="editable">- ได้รับการรับรองคุณภาพมาตรฐานการศึกษาระดับดีเยี่ยม</p>
+                <p contenteditable="true" class="editable">- ครูได้รับการพัฒนาทักษะวิชาชีพและทักษะการสอนครบทุกคน</p>
+                <p contenteditable="true" class="editable">- มีการพัฒนาหลักสูตรฐานสมรรถนะร่วมกับสถานประกอบการ 6 หลักสูตร</p>
+            </div>
+        </div>
+        
+        <!-- หน้าที่ 4: ยุทธศาสตร์ที่ 3 -->
+        <div class="slide">
+            <div class="strategy-title">
+                <h2 contenteditable="true" class="editable">ยุทธศาสตร์ที่ 3: การสร้างสังคมแห่งการเรียนรู้</h2>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-bar" style="height: 85%;">
+                    <div class="chart-value" contenteditable="true">85%</div>
+                    <div class="chart-label" contenteditable="true" style="bottom: -30px; font-weight: bold;">ความร่วมมือ</div>
+                </div>
+                <div class="chart-bar" style="height: 90%;">
+                    <div class="chart-value" contenteditable="true">90%</div>
+                    <div class="chart-label" contenteditable="true" style="bottom: -30px; font-weight: bold;">บริการชุมชน</div>
+                </div>
+                <div class="chart-bar" style="height: 75%;">
+                    <div class="chart-value" contenteditable="true">75%</div>
+                    <div class="chart-label" contenteditable="true" style="bottom: -30px; font-weight: bold;">นวัตกรรม</div>
+                </div>
+                <div class="chart-bar" style="height: 80%;">
+                    <div class="chart-value" contenteditable="true">80%</div>
+                    <div class="chart-label" contenteditable="true" style="bottom: -30px; font-weight: bold;">วิจัย</div>
+                </div>
+                <div class="chart-bar" style="height: 95%;">
+                    <div class="chart-value" contenteditable="true">95%</div>
+                    <div class="chart-label" contenteditable="true" style="bottom: -30px; font-weight: bold;">วิชาการ</div>
+                </div>
+            </div>
+            
+            <h3 contenteditable="true" class="editable">โครงการสำคัญ</h3>
+            <ul class="projects-list">
+                <li class="project-item">
+                    <div class="project-title" contenteditable="true">โครงการสร้างเครือข่ายความร่วมมือกับสถานประกอบการ</div>
+                    <p contenteditable="true" class="editable">ดำเนินการแล้ว 26 เครือข่าย จากเป้าหมาย 30 เครือข่าย คิดเป็น 87% มีนักศึกษาฝึกงาน 560 คน</p>
+                </li>
+                <li class="project-item">
+                    <div class="project-title" contenteditable="true">โครงการบริการวิชาชีพสู่ชุมชน</div>
+                    <p contenteditable="true" class="editable">ดำเนินการแล้ว 18 ชุมชน จากเป้าหมาย 20 ชุมชน คิดเป็น 90% ให้บริการประชาชนมากกว่า 2,500 คน</p>
+                </li>
+                <li class="project-item">
+                    <div class="project-title" contenteditable="true">โครงการพัฒนานวัตกรรมและงานวิจัย</div>
+                    <p contenteditable="true" class="editable">สร้างผลงานวิจัยและนวัตกรรมแล้ว 32 ผลงาน จากเป้าหมาย 40 ผลงาน คิดเป็น 80% ได้รับการเผยแพร่ระดับชาติ 5 ผลงาน</p>
+                </li>
+            </ul>
+            
+            <div class="strategy-card">
+                <h3 contenteditable="true" class="editable">ผลสัมฤทธิ์ที่สำคัญ</h3>
+                <p contenteditable="true" class="editable">- สร้างศูนย์บ่มเพาะผู้ประกอบการอาชีวศึกษาที่ได้มาตรฐาน เกิดธุรกิจต้นแบบ 6 ธุรกิจ</p>
+                <p contenteditable="true" class="editable">- ขยายความร่วมมือกับสถานประกอบการด้านการพัฒนาหลักสูตรและการฝึกงาน 26 แห่ง</p>
+                <p contenteditable="true" class="editable">- การให้บริการวิชาการและวิชาชีพสร้างประโยชน์ให้ชุมชนมูลค่าประมาณ 1.8 ล้านบาท</p>
+            </div>
+        </div>
+        
+        <!-- หน้าที่ 5: สรุปและแผนการดำเนินงานในอนาคต -->
+        <div class="slide">
+            <h1 contenteditable="true" class="editable">สรุปผลการดำเนินงานและแผนในอนาคต</h1>
+            
+            <div class="strategy-card">
+                <h3 contenteditable="true" class="editable">ผลสำเร็จโดยรวม</h3>
+                <p contenteditable="true" class="editable">การดำเนินงานตามแผนปฏิบัติการประจำปีการศึกษา 2567 มีความก้าวหน้าเฉลี่ย 85% ซึ่งเป็นไปตามเป้าหมายที่กำหนด โดยมีโครงการที่ดำเนินการแล้วเสร็จ 42 โครงการ จากทั้งหมด 50 โครงการ และโครงการที่กำลังดำเนินการ 8 โครงการ</p>
+            </div>
+            
+            <h2 contenteditable="true" class="editable">ปัญหาและอุปสรรค</h2>
+            <ul class="projects-list">
+                <li class="project-item">
+                    <p contenteditable="true" class="editable">- การจัดสรรงบประมาณล่าช้าส่งผลให้บางโครงการไม่สามารถดำเนินการได้ตามแผน</p>
+                </li>
+                <li class="project-item">
+                    <p contenteditable="true" class="editable">- การประสานความร่วมมือกับหน่วยงานภายนอกบางแห่งมีข้อจำกัดด้านเวลาและกระบวนการทำงาน</p>
+                </li>
+                <li class="project-item">
+                    <p contenteditable="true" class="editable">- สถานการณ์ภายนอกทำให้ต้องปรับเปลี่ยนรูปแบบการดำเนินกิจกรรมบางส่วน</p>
+                </li>
+            </ul>
+            
+            <h2 contenteditable="true" class="editable">แผนการดำเนินงานในอนาคต</h2>
+            <div class="success-indicators">
+                <div class="indicator-card">
+                    <div class="indicator-value" contenteditable="true">2568</div>
+                    <div class="indicator-label" contenteditable="true">พัฒนาระบบการเรียนรู้ผสมผสาน (Hybrid Learning)</div>
+                </div>
+                <div class="indicator-card">
+                    <div class="indicator-value" contenteditable="true">2568</div>
+                    <div class="indicator-label" contenteditable="true">ขยายความร่วมมือระดับนานาชาติ</div>
+                </div>
+                <div class="indicator-card">
+                    <div class="indicator-value" contenteditable="true">2569</div>
+                    <div class="indicator-label" contenteditable="true">จัดตั้งศูนย์ความเป็นเลิศเฉพาะทาง</div>
+                </div>
+                <div class="indicator-card">
+                    <div class="indicator-value" contenteditable="true">2569</div>
+                    <div class="indicator-label" contenteditable="true">พัฒนาหลักสูตรรองรับอุตสาหกรรมอนาคต</div>
+                </div>
+            </div>
+            
+            <div class="strategy-card">
+                <h3 contenteditable="true" class="editable">ข้อเสนอแนะในการพัฒนา</h3>
+                <p contenteditable="true" class="editable">1. เพิ่มประสิทธิภาพระบบการติดตามและประเมินผลโครงการอย่างต่อเนื่อง</p>
+                <p contenteditable="true" class="editable">2. พัฒนากลไกการทำงานร่วมกับภาคเอกชนให้มีความคล่องตัวมากขึ้น</p>
+                <p contenteditable="true" class="editable">3. สร้างแรงจูงใจและการมีส่วนร่วมของบุคลากรในการขับเคลื่อนยุทธศาสตร์</p>
+                <p contenteditable="true" class="editable">4. พัฒนาการประชาสัมพันธ์ผลงานสู่สาธารณะให้มีประสิทธิภาพมากขึ้น</p>
+            </div>
+        </div>
+        
+        <button class="save-btn" onclick="alert('บันทึกข้อมูลเรียบร้อยแล้ว')">บันทึกข้อมูล</button>
+    </div>
+    
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        
+        function showSlide(n) {
+            if (n >= slides.length) {
+                currentSlide = 0;
+            } else if (n < 0) {
+                currentSlide = slides.length - 1;
+            } else {
+                currentSlide = n;
+            }
+            
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+            });
+            
+            dots.forEach(dot => {
+                dot.classList.remove('active');
+            });
+            
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+        
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+        
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+        
+        // ทำให้ทุก element ที่มี class="editable" สามารถแก้ไขได้
+        document.addEventListener('DOMContentLoaded', function() {
+            const editables = document.querySelectorAll('.editable');
+            
+            editables.forEach(element => {
+                element.setAttribute('contenteditable', 'true');
+                
+                element.addEventListener('focus', function() {
+                    this.style.borderColor = '#d10a30';
+                });
+                
+                element.addEventListener('blur', function() {
+                    this.style.borderColor = 'transparent';
+                });
+            });
+            
+            // เพิ่ม animation เมื่อโหลดหน้า
+            const charts = document.querySelectorAll('.chart-bar');
+            charts.forEach(chart => {
+                const originalHeight = chart.style.height;
+                chart.style.height = '0%';
+                setTimeout(() => {
+                    chart.style.height = originalHeight;
+                }, 500);
+            });
+            
+            const progress = document.querySelectorAll('.progress-bar');
+            progress.forEach(bar => {
+                const originalWidth = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = originalWidth;
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>
